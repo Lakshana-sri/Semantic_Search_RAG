@@ -1,0 +1,13 @@
+faiss-cpu
+rank-bm25
+pymupdf
+python-docx
+beautifulsoup4
+pandas
+numpy
+scikit-learn
+streamlit
+jupyter
+ipykernel
+transformers
+torch
