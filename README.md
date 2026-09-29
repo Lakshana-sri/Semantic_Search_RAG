@@ -1,8 +1,8 @@
 
-# 🧠 NEXUS AI
+#  NEXUS AI
 ## Semantic Search Engine with Retrieval-Augmented Generation (RAG)
 
-### 📌 Project Overview
+###  Project Overview
 
 NEXUS AI is an intelligent document search system that combines semantic search, hybrid retrieval, and Retrieval-Augmented Generation (RAG) to retrieve relevant information from documents and generate contextual answers.
 
@@ -10,7 +10,7 @@ The system allows users to ask natural language questions and obtain answers bas
 
 It uses Sentence Transformers for embedding generation, FAISS for vector similarity search, BM25 for keyword retrieval, and a locally running FLAN-T5 Small model for answer generation.
 
-### 🎯 Objectives
+###  Objectives
 
 - Develop an intelligent document search engine.
 - Extract text from PDF, DOCX, and HTML files.
@@ -20,7 +20,7 @@ It uses Sentence Transformers for embedding generation, FAISS for vector similar
 - Generate context-based answers using a local language model.
 - Display answers and source documents through an interactive web interface.
 
-### ✨ Key Features
+###  Key Features
 
 - Semantic Search
 - Hybrid Search using FAISS and BM25
@@ -31,7 +31,7 @@ It uses Sentence Transformers for embedding generation, FAISS for vector similar
 - Interactive Streamlit interface
 - Similarity score display
 
-### 🛠️ Technologies Used
+###  Technologies Used
 
 | Technology | Purpose |
 |---|---|
@@ -46,7 +46,7 @@ It uses Sentence Transformers for embedding generation, FAISS for vector similar
 | BeautifulSoup | HTML parsing |
 | NumPy | Numerical operations |
 
-### 🏗️ System Architecture
+###  System Architecture
 
 ```text
           Document Collection
@@ -86,7 +86,7 @@ It uses Sentence Transformers for embedding generation, FAISS for vector similar
           Answer + Sources
 ```
 
-### 📂 Project Structure
+###  Project Structure
 
 ```text
 Semantic_Search_RAG/
@@ -116,7 +116,7 @@ Semantic_Search_RAG/
 └── README.md
 ```
 
-### ⚙️ Installation and Setup
+###  Installation and Setup
 
 **1. Clone the repository**
 
@@ -148,7 +148,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### ▶️ How to Run
+###  How to Run
 
 Start the Streamlit application:
 
@@ -162,7 +162,7 @@ Open the local URL displayed in the terminal, usually:
 http://localhost:8501
 ```
 
-### 🔍 Working Process
+###  Working Process
 
 1. Load documents from the document collection.
 2. Extract textual content from supported file formats.
@@ -175,7 +175,7 @@ http://localhost:8501
 9. Generate a context-based answer.
 10. Display the answer and source documents in Streamlit.
 
-### 📊 Current Implementation
+###  Current Implementation
 
 - Supported document formats: PDF, DOCX, HTML
 - Chunk size: 500 words
@@ -185,7 +185,7 @@ http://localhost:8501
 - Vector index: FAISS
 - Answer generation: FLAN-T5 Small
 
-### 🚀 Future Enhancements
+###  Future Enhancements
 
 - Dynamic document uploads
 - Improved answer generation
@@ -194,7 +194,7 @@ http://localhost:8501
 - User feedback and relevance evaluation
 - Advanced ranking and explainability
 
-### 👩‍💻 Developed By
+###  Developed By
 
 **Lakshana Sri Varshini**
 
