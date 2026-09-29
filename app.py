@@ -1,4 +1,3 @@
-
 import streamlit as st
 import re
 import html
@@ -13,7 +12,7 @@ from src.chunking import chunk_documents
 # ==================================================
 
 st.set_page_config(
-    page_title="NEXUS AI | Semantic Search",
+    page_title="NEXUS AI | Intelligent Search",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -21,126 +20,248 @@ st.set_page_config(
 
 
 # ==================================================
-# CUSTOM CSS
+# PROFESSIONAL LIGHT THEME
 # ==================================================
 
 st.markdown("""
 <style>
 
+/* Main Application */
+
 .stApp {
-    background: linear-gradient(135deg, #0d1020, #17182c);
-    color: #f5f5ff;
+    background: #F6F7FB;
+    color: #25304A;
 }
 
 header[data-testid="stHeader"] {
-    background: transparent;
+    background: rgba(246, 247, 251, 0.95);
 }
 
 .block-container {
-    padding-top: 2rem;
     max-width: 1250px;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
 }
 
+
+/* Sidebar */
+
+section[data-testid="stSidebar"] {
+    background: #FFFFFF;
+    border-right: 1px solid #E8EAF2;
+}
+
+section[data-testid="stSidebar"] h1 {
+    color: #5145A8;
+    font-size: 27px;
+}
+
+section[data-testid="stSidebar"] h3 {
+    color: #344064;
+}
+
+
+/* Hero Section */
+
 .hero {
-    padding: 30px;
-    border-radius: 22px;
-    background: linear-gradient(120deg, #30265c, #222d54);
-    border: 1px solid #514477;
-    margin-bottom: 25px;
+    background: linear-gradient(
+        120deg,
+        #FFFFFF 0%,
+        #F0EDFF 100%
+    );
+    padding: 38px;
+    border-radius: 24px;
+    border: 1px solid #E3DDFB;
+    box-shadow: 0 8px 30px rgba(60, 48, 120, 0.06);
+    margin-bottom: 28px;
+}
+
+.hero-tag {
+    display: inline-block;
+    background: #EAE5FF;
+    color: #6254C7;
+    padding: 7px 13px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
 }
 
 .hero h1 {
-    color: white;
+    color: #26345B;
     font-size: 42px;
-    margin-bottom: 8px;
+    font-weight: 750;
+    line-height: 1.2;
+    margin-bottom: 12px;
 }
 
 .hero p {
-    color: #d0c9ed;
+    color: #65708A;
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.8;
+    max-width: 750px;
 }
 
+
+/* Dashboard Cards */
+
 .metric-card {
-    background: #20243b;
-    border: 1px solid #393c59;
-    padding: 20px;
-    border-radius: 16px;
+    background: #FFFFFF;
+    border: 1px solid #E8EAF2;
+    padding: 24px 18px;
+    border-radius: 18px;
     text-align: center;
+    box-shadow: 0 5px 18px rgba(35, 45, 75, 0.04);
+    transition: 0.2s ease;
+}
+
+.metric-card:hover {
+    border-color: #CFC5FA;
+    box-shadow: 0 8px 24px rgba(75, 60, 145, 0.09);
 }
 
 .metric-number {
-    color: #bba7ff;
-    font-size: 30px;
-    font-weight: 700;
+    color: #6254C7;
+    font-size: 32px;
+    font-weight: 750;
 }
 
 .metric-label {
-    color: #b8bad0;
+    color: #758099;
     font-size: 13px;
+    margin-top: 5px;
+    font-weight: 500;
 }
 
+
+/* Section Headings */
+
+h1, h2, h3 {
+    color: #29365D;
+    font-weight: 700;
+}
+
+
+/* Generated Answer */
+
 .answer-card {
-    background: #20243b;
-    border: 1px solid #514477;
-    border-left: 5px solid #9b7aff;
-    border-radius: 15px;
-    padding: 23px;
+    background: #FFFFFF;
+    border: 1px solid #E5E0FA;
+    border-left: 5px solid #7565D8;
+    border-radius: 16px;
+    padding: 26px;
     line-height: 1.9;
-    color: #f5f3ff;
+    color: #34415E;
     font-size: 16px;
     overflow-wrap: anywhere;
+    box-shadow: 0 5px 20px rgba(45, 45, 90, 0.04);
 }
+
+
+/* Retrieved Documents */
 
 .document-content {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
-    word-break: normal;
-    line-height: 1.9;
+    line-height: 1.85;
     font-size: 15px;
-    color: #e2e2f0;
-    background: #171a2e;
-    padding: 18px;
+    color: #34415E;
+    background: #F8F9FD;
+    padding: 20px;
     border-radius: 12px;
-    border: 1px solid #393c59;
+    border: 1px solid #E7E9F1;
 }
 
+
+/* Buttons */
+
 div.stButton > button {
+    background: #6254C7;
+    color: #FFFFFF !important;
+    border: 1px solid #6254C7;
     border-radius: 12px;
-    border: 1px solid #8065d9;
-    background: linear-gradient(90deg, #7355d9, #5943b4);
-    color: white;
+    min-height: 46px;
     font-weight: 600;
-    min-height: 45px;
-    transition: 0.2s;
+    transition: all 0.2s ease;
+}
+
+div.stButton > button p,
+div.stButton > button span,
+div.stButton > button div {
+    color: #FFFFFF !important;
 }
 
 div.stButton > button:hover {
-    border-color: #c0aaff;
-    color: white;
-    background: #8065d9;
+    background: #5042B2;
+    border-color: #5042B2;
+    color: #FFFFFF !important;
+    box-shadow: 0 5px 14px rgba(98, 84, 199, 0.2);
 }
 
-div[data-testid="stExpander"] {
-    background: #20243b;
-    border: 1px solid #393c59;
-    border-radius: 12px;
-}
 
-section[data-testid="stSidebar"] {
-    background: #15182b;
-    border-right: 1px solid #343751;
-}
+/* Search Input */
 
 .stTextInput input {
-    background: #20243b;
-    color: white;
-    border-radius: 12px;
-    border: 1px solid #514477;
+    background: #FFFFFF;
+    color: #25304A;
+    border: 1px solid #DDE1EC;
+    border-radius: 13px;
+    min-height: 48px;
 }
 
-h2, h3 {
-    color: #e9e4ff;
+.stTextInput input:focus {
+    border-color: #7565D8;
+    box-shadow: 0 0 0 1px #7565D8;
+}
+
+
+/* Expanders */
+
+div[data-testid="stExpander"] {
+    background: #FFFFFF;
+    border: 1px solid #E5E8F0;
+    border-radius: 14px;
+}
+
+div[data-testid="stExpander"] summary {
+    color: #344064;
+    font-weight: 600;
+}
+
+
+/* Dividers */
+
+hr {
+    border-color: #E3E6EF;
+}
+
+
+/* General Text */
+
+p, label {
+    color: #34415E;
+}
+
+[data-testid="stCaptionContainer"] {
+    color: #758099;
+}
+
+
+/* Footer */
+
+.footer {
+    text-align: center;
+    color: #8991A5;
+    font-size: 13px;
+    line-height: 1.8;
+    padding: 20px;
+}
+
+.footer strong {
+    color: #6254C7;
+    font-size: 17px;
+    letter-spacing: 1px;
 }
 
 </style>
@@ -163,47 +284,59 @@ with st.sidebar:
 
     st.markdown("# 🧠 NEXUS AI")
 
-    st.caption("Your Intelligent Knowledge Assistant")
+    st.caption("INTELLIGENT KNOWLEDGE ASSISTANT")
 
     st.divider()
 
     st.markdown("### Navigation")
 
-    st.markdown("🔎 Semantic Search")
-    st.markdown("📚 Knowledge Base")
-    st.markdown("✨ AI Answer Generator")
+    st.markdown("🔎  Semantic Search")
+    st.markdown("📚  Knowledge Base")
+    st.markdown("✨  AI Answer Generator")
 
     st.divider()
 
     st.markdown("### System Status")
 
-    st.success("Local AI Model Ready")
-    st.info("FAISS Vector Database Active")
-    st.info("Hybrid Retrieval Enabled")
+    st.success("● Local AI Model Ready")
+    st.info("● FAISS Vector Database Active")
+    st.info("● Hybrid Retrieval Enabled")
 
     st.divider()
 
-    st.markdown("### Technologies")
+    st.markdown("### Technology Stack")
 
     st.caption("Sentence Transformers")
     st.caption("FAISS + BM25")
     st.caption("FLAN-T5 Small")
     st.caption("Streamlit")
 
+    st.divider()
+
+    st.caption("NEXUS AI | Version 1.0")
+
 
 # ==================================================
 # HERO SECTION
 # ==================================================
 
-st.markdown("""
+st.html("""
 <div class="hero">
-    <h1>Ask your knowledge base.</h1>
+
+    <div class="hero-tag">
+        AI POWERED DOCUMENT INTELLIGENCE
+    </div>
+
+    <h1>Knowledge, at your fingertips.</h1>
+
     <p>
-        Discover information from your documents using semantic search,
-        hybrid retrieval and local AI answer generation.
+        Discover insights from your documents through intelligent
+        semantic search, hybrid retrieval, and context-aware
+        AI answer generation.
     </p>
+
 </div>
-""", unsafe_allow_html=True)
+""")
 
 
 # ==================================================
@@ -214,31 +347,33 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
 
-    st.markdown(f"""
+    st.html(f"""
     <div class="metric-card">
         <div class="metric-number">{len(documents)}</div>
         <div class="metric-label">Documents Indexed</div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
 with col2:
 
-    st.markdown(f"""
+    st.html(f"""
     <div class="metric-card">
         <div class="metric-number">{len(chunks)}</div>
-        <div class="metric-label">Text Chunks</div>
+        <div class="metric-label">Knowledge Chunks</div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
 with col3:
 
-    st.markdown("""
+    st.html("""
     <div class="metric-card">
         <div class="metric-number">384</div>
         <div class="metric-label">Embedding Dimensions</div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
+
+st.write("")
 st.write("")
 
 
@@ -248,8 +383,11 @@ st.write("")
 
 st.markdown("## 🔍 Intelligent Search")
 
+st.caption(
+    "Ask a question and retrieve meaningful answers from your knowledge base."
+)
 
-# Callback for sample questions
+
 def set_query(example):
     st.session_state.search_input = example
 
@@ -259,13 +397,13 @@ if "search_input" not in st.session_state:
 
 
 query = st.text_input(
-    "Ask anything",
+    "Your question",
     placeholder="e.g. How does machine learning work?",
     key="search_input"
 )
 
 
-st.markdown("**Try these questions:**")
+st.markdown("**Explore example questions**")
 
 examples = [
     "What is Artificial Intelligence?",
@@ -289,14 +427,15 @@ for i, example in enumerate(examples):
         )
 
 
+st.write("")
+
 search_clicked = st.button(
-    "✨ Generate AI Answer",
+    "✨  Generate AI Answer",
     type="primary",
     use_container_width=True
 )
 
 
-#
 # ==================================================
 # ANSWER GENERATION
 # ==================================================
@@ -305,12 +444,12 @@ if search_clicked:
 
     if not query.strip():
 
-        st.warning("Please enter a question.")
+        st.warning("Please enter a question to continue.")
 
     else:
 
         with st.spinner(
-            "Searching documents and generating AI answer..."
+            "Analyzing your query and retrieving relevant information..."
         ):
 
             try:
@@ -321,24 +460,27 @@ if search_clicked:
 
                 st.markdown("## ✨ AI Generated Answer")
 
-                st.markdown(
-                    f"""
-                    <div class="answer-card">
-                        {html.escape(result["answer"])}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                st.html(f"""
+                <div class="answer-card">
+                    {html.escape(result["answer"])}
+                </div>
+                """)
 
                 st.caption(
-                    "Generated using retrieved knowledge from your documents."
+                    "Response generated using retrieved information "
+                    "from your knowledge base."
                 )
+
 
                 # ======================================
                 # RETRIEVED SOURCES
                 # ======================================
 
                 st.markdown("## 📚 Retrieved Sources")
+
+                st.caption(
+                    "Explore the document passages used during retrieval."
+                )
 
                 for source_number, source in enumerate(
                     result["sources"], 1
@@ -350,17 +492,17 @@ if search_clicked:
 
                     with st.expander(
                         f"📄 {source_number}. {filename} | "
-                        f"Chunk {chunk_id} | "
-                        f"Score {score:.3f}"
+                        f"Chunk {chunk_id} | Score {score:.3f}"
                     ):
 
-                        # Get original retrieved text
                         text = source["text"]
 
-                        # Remove excessive spaces and line breaks
-                        text = re.sub(r'\s+', ' ', text).strip()
+                        text = re.sub(
+                            r'\s+',
+                            ' ',
+                            text
+                        ).strip()
 
-                        # Divide text into readable paragraphs
                         sentences = re.split(
                             r'(?<=[.!?])\s+',
                             text
@@ -382,17 +524,13 @@ if search_clicked:
 
                         formatted_text = "\n\n".join(paragraphs)
 
-                        # Safely display formatted text
                         safe_text = html.escape(formatted_text)
 
-                        st.markdown(
-                            f"""
-                            <div class="document-content">
-                                {safe_text}
-                            </div>
-                            """,
-                            unsafe_allow_html=True
-                        )
+                        st.html(f"""
+                        <div class="document-content">
+                            {safe_text}
+                        </div>
+                        """)
 
                         st.write("")
 
@@ -407,6 +545,8 @@ if search_clicked:
             except Exception as e:
 
                 st.error(f"Error generating answer: {e}")
+
+
 # ==================================================
 # KNOWLEDGE BASE
 # ==================================================
@@ -415,7 +555,11 @@ st.markdown("---")
 
 st.markdown("## 📂 Knowledge Base")
 
-with st.expander("View all indexed documents"):
+st.caption(
+    "Documents currently available for intelligent retrieval."
+)
+
+with st.expander("Explore Indexed Documents"):
 
     if documents:
 
@@ -425,7 +569,7 @@ with st.expander("View all indexed documents"):
                 f"""
                 📄 **{doc['filename']}**
 
-                <span style="color:#aaaacc">
+                <span style="color:#758099">
                 {doc['word_count']:,} words
                 </span>
                 """,
@@ -436,7 +580,7 @@ with st.expander("View all indexed documents"):
 
     else:
 
-        st.warning("No documents found.")
+        st.warning("No documents found in the knowledge base.")
 
 
 # ==================================================
@@ -445,10 +589,16 @@ with st.expander("View all indexed documents"):
 
 st.markdown("---")
 
-st.markdown(
-    "<div style='text-align:center;color:#9999b5;'>"
-    "NEXUS AI | Semantic Search Engine with RAG<br>"
-    "Powered by Local AI"
-    "</div>",
-    unsafe_allow_html=True
-)
+st.html("""
+<div class="footer">
+
+    <strong>NEXUS AI</strong><br>
+
+    Semantic Search Engine with Retrieval-Augmented Generation<br>
+
+    Search · Retrieve · Generate · Discover<br><br>
+
+    Powered by Local AI
+
+</div>
+""")
